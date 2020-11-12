@@ -1,22 +1,34 @@
 package com.familytree.genealogic.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.familytree.genealogic.controller.GenealogicController;
 
 
 @Entity
-@JsonIgnoreProperties()
 public class Pessoa implements Serializable{
+	
+	public Pessoa(){
+		irmaosReferencia = new ArrayList<Pessoa>();
+		irmaos = new ArrayList<Pessoa>();
+	}
+	
+	@Transient
+	public static Pessoa pessoalAtual;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,9 +40,21 @@ public class Pessoa implements Serializable{
 	@ManyToOne()
 	private Pessoa mae;
 	
-	@ManyToMany	
+	
+	@ManyToMany
+	@JoinTable(name="pessoas_irmaos",
+	 joinColumns=@JoinColumn(name="id_irmao"),
+	 inverseJoinColumns=@JoinColumn(name="id_irmao_referencia")
+	)
 	private List<Pessoa> irmaos;
 
+	@ManyToMany
+	@JoinTable(name="pessoas_irmaos",
+	 joinColumns=@JoinColumn(name="id_irmao_referencia"),
+	 inverseJoinColumns=@JoinColumn(name="id_irmao")
+	)
+	private List<Pessoa> irmaosReferencia;
+	
 	private String nome;
 	
 	@OneToOne
@@ -71,6 +95,10 @@ public class Pessoa implements Serializable{
 	}
 	public void setIrmaos(List<Pessoa> irmaos) {
 		this.irmaos = irmaos;
+	}
+	
+	public List<Pessoa> getIrmaosReferencia() {
+		return irmaosReferencia;
 	}
 	public String getNome() {
 		return nome;

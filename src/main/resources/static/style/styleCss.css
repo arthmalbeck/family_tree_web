@@ -16,6 +16,11 @@
 .tabelaConvidado{
 	width: 50%;
 }
+ table.tabelaConvidado th,
+  table.tabelaConvidado td {
+    text-align: center;
+  }
+
 
 .formEvento{
 	box-shadow: 0px 0px 5px grey;
