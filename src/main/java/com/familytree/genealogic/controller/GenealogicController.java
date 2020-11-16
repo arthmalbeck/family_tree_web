@@ -2,28 +2,28 @@ package com.familytree.genealogic.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.familytree.genealogic.model.Pessoa;
+import com.familytree.genealogic.repository.CertidaoRepository;
 import com.familytree.genealogic.repository.PessoaRepository;
 
 @Controller
 public class GenealogicController {
-	
 
-//	if (Pessoa.pessoalAtual == null)
-	
+//	if (Pessoa.pessoaAtual == null)
 
 	@Autowired
 	private PessoaRepository pR;
+
+	@Autowired
+	private CertidaoRepository cR;
 
 	@RequestMapping("/1")
 	public String index2() {
@@ -64,42 +64,104 @@ public class GenealogicController {
 
 		return "index";
 	}
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("index");
-		Pessoa.pessoalAtual = buscarPessoas().get(0);
-		mv.addObject("pessoa", Pessoa.pessoalAtual);
+		Pessoa.pessoaAtual = pR.findById(1);
+		mv.addObject("pessoa", Pessoa.pessoaAtual);
 		return mv;
 	}
-
 
 	@RequestMapping(value = "familytree-{idPessoa}", method = RequestMethod.GET)
 	public ModelAndView arvoreGenealogica(@PathVariable("idPessoa") int idPessoa) {
 		List<Pessoa> pessoas = new ArrayList<Pessoa>();
 		pessoas = buscarPessoas();
-		Pessoa.pessoalAtual = pR.findById(idPessoa);
+		Pessoa.pessoaAtual = pR.findById(idPessoa);
 
 		ModelAndView mv = new ModelAndView("familytree");
-		mv.addObject("pessoa", Pessoa.pessoalAtual);
+		mv.addObject("pessoa", Pessoa.pessoaAtual);
 
-		List<Pessoa> todosIrmaos = Pessoa.pessoalAtual.getIrmaos();
-		todosIrmaos.addAll(Pessoa.pessoalAtual.getIrmaosReferencia());
+		List<Pessoa> todosIrmaos = Pessoa.pessoaAtual.getIrmaos();
+		todosIrmaos.addAll(Pessoa.pessoaAtual.getIrmaosReferencia());
 
 		Iterable<Pessoa> irmaos = todosIrmaos;
-		mv.addObject("irmaos", irmaos);
+		mv.addObject("listaIrmaos", irmaos);
 
 		List<Pessoa> acharFilhos = new ArrayList<Pessoa>();
 		for (Pessoa p : pessoas) {
-			if (p.getMae() == Pessoa.pessoalAtual || p.getPai() == Pessoa.pessoalAtual) {
+			if (p.getMae().getId() == Pessoa.pessoaAtual.getId() || p.getPai().getId() == Pessoa.pessoaAtual.getId()) {
 				acharFilhos.add(p);
 			}
 		}
-
 		Iterable<Pessoa> filhos = acharFilhos;
-		mv.addObject("filhos", filhos);
+		mv.addObject("listaFilhos", filhos);
+
+		mv.addObject("pai", "Pai");
+		mv.addObject("mae", "Mae");
+		mv.addObject("filhos", "Filhos");
+		mv.addObject("irmaos", "Irmaos");
 
 		return mv;
+	}
+
+	@RequestMapping(value = "formCadastroPessoa-{tipo}", method = RequestMethod.GET)
+	public ModelAndView formCadPessoa(@PathVariable("tipo") String tipo) {
+		ModelAndView mv = new ModelAndView("cadastroPessoa");
+		mv.addObject("pessoa", Pessoa.pessoaAtual);
+
+		mv.addObject("tipo", tipo);
+
+		return mv;
+	}
+
+	@RequestMapping(value = "formCadastroPessoa-{tipo}", method = RequestMethod.POST)
+	public String CadastrarPessoa(Pessoa pessoa, @PathVariable("tipo") String tipo) {
+		System.out.println("xwxwwqwewecewcweoiii" + Pessoa.pessoaAtual.getSexo());
+		switch (tipo) {
+		case "Pai":
+			Pessoa.pessoaAtual.setPai(pessoa);
+			break;
+		case "Mae":
+			Pessoa.pessoaAtual.setMae(pessoa);
+			break;
+		case "Filhos":
+			if (Pessoa.pessoaAtual.getSexo().equalsIgnoreCase("MASCULINO")) {
+				pessoa.setPai(Pessoa.pessoaAtual);
+			} else {
+				pessoa.setMae(Pessoa.pessoaAtual);
+			}
+			break;
+		case "Irmaos":
+			Pessoa.pessoaAtual.getIrmaos().add(pessoa);
+			break;
+		default:
+			break;
+		}
+		if (pessoa.getCertidaoNascimento() == null) {
+			pessoa.setCertidaoNascimento(cR.findById(99));
+		} else {
+			cR.save(pessoa.getCertidaoNascimento());
+		}
+
+		if (pessoa.getCertidaoObito() == null) {
+			pessoa.setCertidaoObito(cR.findById(99));
+		} else {
+			cR.save(pessoa.getCertidaoObito());
+		}
+
+		if (pessoa.getPai() == null) {
+			pessoa.setPai(pR.findById(99));
+		} 
+		
+		if (pessoa.getMae() == null) {
+			pessoa.setMae(pR.findById(99));
+		}
+
+		pR.save(pessoa);
+		pR.save(Pessoa.pessoaAtual);
+
+		return "redirect:/familytree-" + Pessoa.pessoaAtual.getId();
 	}
 
 	public List<Pessoa> buscarPessoas() {
@@ -113,39 +175,9 @@ public class GenealogicController {
 	@RequestMapping(value = "/cadastro-pessoa", method = RequestMethod.GET)
 	public ModelAndView cadastroPessoa() {
 		ModelAndView mv = new ModelAndView("cadastrar_pessoa");
-		mv.addObject("pessoa", Pessoa.pessoalAtual);
-	
+		mv.addObject("pessoa", Pessoa.pessoaAtual);
+
 		return mv;
-	}
-
-	@RequestMapping(value = "/cadastro-pessoa/{tipoCadastro}", method = RequestMethod.POST)
-	public String cadastrarPessoa(Pessoa pessoa, @PathVariable("tipoCadasttro") String tipo) {
-		switch (tipo) {
-		case "PAIS":
-			if (pessoa.getSexo().equalsIgnoreCase("MASCULINO")) {
-				Pessoa.pessoalAtual.setPai(pessoa);
-			} else {
-				Pessoa.pessoalAtual.setMae(pessoa);
-			}
-			break;
-		case "FILHOS":
-			if (Pessoa.pessoalAtual.getSexo().equalsIgnoreCase("MASCULINO")) {
-				pessoa.setPai(Pessoa.pessoalAtual);
-			}else {
-				pessoa.setMae(Pessoa.pessoalAtual);
-			}
-			break;
-		case "IRMAOS": Pessoa.pessoalAtual.getIrmaos().add(pessoa);
-			break;
-		default:
-			break;
-		}
-		
-		pR.save(pessoa);
-		pR.save(Pessoa.pessoalAtual);
-
-
-		return "redirect:/familytree-" + Pessoa.pessoalAtual.getId();
 	}
 
 }

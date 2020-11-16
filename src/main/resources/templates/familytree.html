@@ -2,7 +2,7 @@
 <html xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title>FourZeta</title>
+<title>Genealogic</title>
 <!--Import Google Icon Font-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
@@ -10,53 +10,98 @@
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link type="text/css" rel="stylesheet"
+	href="materialize/css/materialize.min.css" media="screen,projection" />
+
+<style>
+.btn, .btn-large {
+	background-color: #3c763d;
+}
+</style>
 
 <link rel="stylesheet" href="style/styleCss.css" />
 <link href="style/bootstrap.min.css" rel="stylesheet">
+
+
 </head>
 <body>
 
 	<header>
-		<nav style="background-color: #4caf50">
-			<div class="nav-wrapper" th:each="pessoa : ${pessoa}">
-				<a href="#" class="brand-logo">Genealogic</a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Login</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Formularios de Cadastro</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Galeria de Fotos</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Arvore</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Home</a></li>
-				</ul>
-			</div>
-		</nav>
-		
-		
+		<ul id="nav-mobile"
+			style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333;">
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Login</a></li>
+
+
+			<li class="menu"><a
+				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Ver
+					Solicitacoes Cadastro Pessoas</a></li>
+
+			<li class="menu"><a
+				style="display: Block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Solicitar
+					Cadastro Pessoas</a></li>
+
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Galeria
+					de Fotos</a></li>
+
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Arvore</a></li>
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#index')).build()}">Home</a></li>
+
+			<li style="float: left" class="menu"><h3
+					style="font-size: 19px; display: block; color: white; text-align: center; padding: 2px 20px 2px; text-decoration: none;">Genealogic</h3></li>
+
+		</ul>
+
+
+
 	</header>
+	<!-- <input type="hidden" id="confereLogin" th:value ="${logado}" /> -->
+	<div class="row" th:each="pessoa : ${pessoa}"
+		style="padding: 5px 0px 0px 20px; max-width: 1200px">
 
-	<div class="row">
-		<div class="col-lg-12">
+		<input type="hidden" id="cadPaiHidden" th:value="${pessoa.pai.nome}" />
+		<a id="cadPai"
+			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, pai)).build()}"
+			class="waves-effect waves-light btn"><i
+			class="material-icons left">person_add </i>Cadastrar Pai</a> <input
+			type="hidden" id="cadMaeHidden" th:value="${pessoa.mae.nome}" /> <a
+			id="cadMae"
+			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, mae)).build()}"
+			class="waves-effect waves-light btn"><i
+			class="material-icons left">person_add </i>Cadastrar Mae</a> <input
+			type="hidden" id="cadFilhosHidden" th:value="${pessoa.sexo}" /> <a
+			id="cadFilhos"
+			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, filhos)).build()}"
+			class="waves-effect waves-light btn"><i
+			class="material-icons left">person_add </i>Cadastrar Filhos</a> <input
+			type="hidden" id="cadIrmaosHidden" th:value="${pessoa.sexo}" /> <a
+			id="cadIrmaos"
+			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, irmaos)).build()}"
+			class="waves-effect waves-light btn"><i
+			class="material-icons left">person_add </i>Cadastrar Irmaos</a>
+	</div>
 
-			<div style="margin-top: 60px;" th:each="pessoa : ${pessoa}"
+
+	<div class="row" style="max-width: 1200px">
+		<div class="col-lg-6">
+
+			<div style="margin-top: 10px;" th:each="pessoa : ${pessoa}"
 				class="container detalhesEvento">
-				<h5>Pessoa</h5>
+				<h5 style="padding-left: 45%">
+					<Strong>Perfil</Strong>
+				</h5>
 				<div class="row">
 					<p>
 						Nome: <span th:text="${pessoa.nome}"></span>
@@ -65,31 +110,89 @@
 						Sexo: <span th:text="${pessoa.sexo}"></span>
 					</p>
 					<p>
-						Pai: <span th:text="${pessoa.pai}"></span>
+						Profissao: <span th:text="${pessoa.profissao}"></span>
 					</p>
 					<p>
-						Mae: <span th:text="${pessoa.mae}"></span>
+						Escolaridade: <span th:text="${pessoa.escolaridade}"></span>
+					</p>
+					<p>
+						Titulos Especiais: <span th:text="${pessoa.titulosEspeciais}"></span>
+					</p>
+					<p>
+						Historia Familia: <span th:text="${pessoa.historiaFamilia}"></span>
+					</p>
+					<p>
+						Origem Nome: <span th:text="${pessoa.origemNome}"></span>
+					</p>
+					<p>
+						Origem Sobrenome: <span th:text="${pessoa.origemSobrenome}"></span>
+					</p>
+					<p>
+						Outras Informacoes: <span th:text="${pessoa.outrasInformacoes}"></span>
 					</p>
 				</div>
 			</div>
+		</div>
 
+		<div class="col-lg-6">
+
+			<div style="margin-top: 10px;" th:each="pessoa : ${pessoa}"
+				class="container detalhesEvento">
+				<h5 style="padding-left: 35%">
+					<Strong> Certidao Nascimento</Strong>
+				</h5>
+				<div class="row">
+					<p>
+						Data: <span th:text="${pessoa.certidaoNascimento.data}"></span>
+					</p>
+					<p>
+						Pais: <span th:text="${pessoa.certidaoNascimento.pais}"></span>
+					</p>
+					<p>
+						Estado: <span th:text="${pessoa.certidaoNascimento.estado}"></span>
+					</p>
+					<p>
+						Cidade: <span th:text="${pessoa.certidaoNascimento.cidade}"></span>
+					</p>
+					<h5 style="padding-left: 40%">
+						<Strong> Certidao Obito</Strong>
+					</h5>
+					<p>
+						Data: <span th:text="${pessoa.certidaoObito.data}"></span>
+					</p>
+					<p>
+						Pais: <span th:text="${pessoa.certidaoObito.pais}"></span>
+					</p>
+					<p>
+						Estado: <span th:text="${pessoa.certidaoObito.estado}"></span>
+					</p>
+					<p>
+						Cidade: <span th:text="${pessoa.certidaoObito.cidade}"></span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-12" style="padding: 10px 0px 0px 40px;">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item"><a class="nav-link active" id="filhos-tab"
+				<li class="nav-item"><a class="nav-link" id="filhos-tab"
 					data-toggle="tab" href="#filhos" role="tab" aria-controls="filhos"
-					aria-selected="true">Filhos</a></li>
-
+					aria-selected="false" aria-expanded="false">Filhos</a></li>
 
 				<li class="nav-item"><a class="nav-link" id="irmaos-tab"
 					data-toggle="tab" href="#irmaos" role="tab" aria-controls="irmaos"
-					aria-selected="false">irmaos</a></li>
+					aria-selected="false" aria-expanded="false">irmaos</a></li>
+
+				<li class="nav-item active"><a class="nav-link show active"
+					id="pais-tab" data-toggle="tab" href="#pais" role="tab"
+					aria-controls="pais" aria-selected="true" aria-expanded="true">Pais</a></li>
 			</ul>
 
 
 
-			<div class="tab-content" id="myTabContent">
-
-				<div class="tab-pane fade show active in" id="filhos"
-					role="tabpanel" aria-labelledby="filhos-tab">
+			<div class="tab-content" id="myTabContent" style="min-width: 1000px">
+				<div class="tab-pane fade" id="filhos" role="tabpanel"
+					aria-labelledby="filhos-tab">
 
 					<div class="row">
 						<div class="col-lg-12">
@@ -105,13 +208,13 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="filho: ${filhos}">
+									<tr th:each="filho: ${listaFilhos}">
 										<td><span th:text="${filho.nome}"></span></td>
 										<td><span th:text="${filho.sexo}"></span></td>
-										<td><span th:text="${filho.pai}"></span></td>
-										<td><span th:text="${filho.pai}"></span></td>
+										<td><span th:text="${filho.pai.nome}"></span></td>
+										<td><span th:text="${filho.mae.nome}"></span></td>
 										<td><a class="waves-effect waves-light btn-small"><i
-												class="material-icons left">edit</i></a>|<a th:href="#"
+												class="material-icons left">edit</i></a>|<a
 											class="waves-effect waves-light btn-small"><i
 												class="material-icons right">delete</i></a></td>
 									</tr>
@@ -123,7 +226,7 @@
 
 				<div class="tab-pane fade" id="irmaos" role="tabpanel"
 					aria-labelledby="irmaos-tab">
-					<div class="row">
+					<div class="row" style="padding-top: 1px">
 						<div class="col-lg-12">
 
 							<table class="container tabelaConvidado">
@@ -137,11 +240,11 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="irmao : ${irmaos}">
+									<tr th:each="irmao : ${listaIrmaos}">
 										<td><span th:text="${irmao.nome}"></span></td>
 										<td><span th:text="${irmao.sexo}"></span></td>
-										<td><span th:text="${irmao.pai}"></span></td>
-										<td><span th:text="${irmao.mae}"></span></td>
+										<td><span th:text="${irmao.pai.nome}"></span></td>
+										<td><span th:text="${irmao.mae.nome}"></span></td>
 										<td><a class="waves-effect waves-light btn-small"><i
 												class="material-icons left">edit</i></a>|<a
 											class="waves-effect waves-light btn-small"><i
@@ -154,6 +257,51 @@
 				</div>
 
 
+				<div class="tab-pane fade active in" id="pais" role="tabpanel"
+					aria-labelledby="pais-tab">
+
+					<div class="row">
+						<div class="col-lg-12">
+
+							<table class="container tabelaConvidado">
+								<thead>
+									<tr>
+										<th>Nome</th>
+										<th>Sexo</th>
+										<th>Pai</th>
+										<th>Mae</th>
+										<th>Acoes</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="pai: ${pessoa.pai}">
+										<td><span th:text="${pai.nome}"></span></td>
+										<td><span th:text="${pai.sexo}"></span></td>
+										<td><span th:text="${pai.pai.nome}"></span></td>
+										<td><span th:text="${pai.mae.nome}"></span></td>
+										<td><a id="editPai"
+											class="waves-effect waves-light btn-small"><i
+												class="material-icons left">edit</i></a>|<a id="deletePai"
+											class="waves-effect waves-light btn-small"><i
+												class="material-icons right">delete</i></a></td>
+									</tr>
+									<tr th:each="mae: ${pessoa.mae}">
+										<td><span th:text="${mae.nome}"></span></td>
+										<td><span th:text="${mae.sexo}"></span></td>
+										<td><span th:text="${mae.pai.nome}"></span></td>
+										<td><span th:text="${mae.mae.nome}"></span></td>
+										<td><a id="editMae"
+											class="waves-effect waves-light btn-small"><i
+												class="material-icons left">edit</i></a>|<a id="deleteMae"
+											class="waves-effect waves-light btn-small"><i
+												class="material-icons right">delete</i></a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -161,11 +309,11 @@
 
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	<script src="materialize/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			$('#myTab li:first-child a').tab('show')
+			$('#myTab li:last-child a').tab('show')
 		})
 	</script>
 

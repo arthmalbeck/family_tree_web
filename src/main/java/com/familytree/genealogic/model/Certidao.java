@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Certidao {
@@ -15,6 +16,9 @@ public class Certidao {
 	private String pais;
 	private String estado;
 	private String data;
+	
+	@OneToOne
+	private Pessoa pessoa;
 	
 	public int getId() {
 		return id;

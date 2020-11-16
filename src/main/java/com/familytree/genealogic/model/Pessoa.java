@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+
 import com.familytree.genealogic.controller.GenealogicController;
 
 
@@ -24,10 +27,15 @@ public class Pessoa implements Serializable{
 	public Pessoa(){
 		irmaosReferencia = new ArrayList<Pessoa>();
 		irmaos = new ArrayList<Pessoa>();
+		
+	}
+	
+	Pessoa(String nome){
+		this.nome = nome;
 	}
 	
 	@Transient
-	public static Pessoa pessoalAtual;
+	public static Pessoa pessoaAtual;
 	
 	
 	@Id
@@ -71,6 +79,13 @@ public class Pessoa implements Serializable{
 	private String origemSobrenome;
 	private String outrasInformacoes;
 	private String sexo;
+	
+	public void conferePais(){
+		if(this.pai == null || this.pai.getNome().trim().equals("")) {
+			pai = new Pessoa("Desconhecido");
+		}else if(this.mae == null || this.mae.getNome().trim().equals(""))
+		mae = new Pessoa("Desconhecido");
+	}
 	
 	public int getId() {
 		return id;

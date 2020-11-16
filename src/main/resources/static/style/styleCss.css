@@ -14,7 +14,7 @@
 }
 
 .tabelaConvidado{
-	width: 50%;
+	min-width: 100%;
 }
  table.tabelaConvidado th,
   table.tabelaConvidado td {
@@ -30,10 +30,6 @@
 	margin-bottom: 60px;
 }
 
-.menu{
-	background-color: #3399ff;
-}
-
 .button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -44,3 +40,19 @@
   display: inline-block;
   font-size: 16px;
 }
+li {
+	float: right;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+	background-color: #111;
+}
+
+.container {
+	margin: 0 auto;
+	max-width: 500px;
+	width: 90%;
+}
+
+

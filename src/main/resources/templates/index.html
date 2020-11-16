@@ -7,52 +7,57 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
 <!--Import materialize.css-->
-<link type="text/css" rel="stylesheet"
-	href="materialize/css/materialize.min.css" media="screen,projection" />
+
 
 <!--Let browser know website is optimized for mobile-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link type="text/css" rel="stylesheet"
+	href="materialize/css/materialize.min.css" media="screen,projection" />
+	
 <link rel="stylesheet" href="style/styleCss.css" />
+<link href="style/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
 	<header>
-		<nav style="background-color: #4caf50">
-			<div class="nav-wrapper" th:each="pessoa : ${pessoa}">
-				<a href="#" class="brand-logo">Genealogic</a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Login</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Formularios de Cadastro</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Galeria de Fotos</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Arvore</a></li>
-				</ul>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}"
-						>Home</a></li>
-				</ul>
-			</div>
-		</nav>
+	<ul id="nav-mobile"
+			style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333;">
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Login</a></li>
+
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Formularios
+					de Cadastro</a></li>
+
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Galeria
+					de Fotos</a></li>
+
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Arvore</a></li>
+
+			<li class="menu"><a
+				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				th:href="${(#mvc.url('GC#index')).build()}">Home</a></li>
+
+			<li style="float: left" class="menu"><h3
+					style="font-size: 19px; display: block; color: white; text-align: center; padding: 2px 20px 2px; text-decoration: none;">Genealogic</h3></li>
+
+		</ul>
 	</header>
 
-	<div class="row" style="align-content: center; aling: center">
-		<div style="align-content: center;">
+	<div class="row" style="padding-left: 10%;padding-top: 10px">
+		<div style="padding-left: 30%;">
 			<h2>Arvore Genealogica Online</h2>
 		</div>
+		<div style="padding-left: 10%; max-width: 900px">
 		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
 			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -60,12 +65,12 @@
 			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
 			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
 			culpa qui officia deserunt mollit anim id est laborum</p>
+		</div>
 	</div>
 
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
-
+	
 </body>
 
 
