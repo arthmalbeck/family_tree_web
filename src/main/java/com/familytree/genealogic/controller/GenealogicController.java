@@ -10,14 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.familytree.genealogic.model.DBFile;
 import com.familytree.genealogic.model.Pessoa;
+import com.familytree.genealogic.model.Usuario;
 import com.familytree.genealogic.repository.CertidaoRepository;
+import com.familytree.genealogic.repository.DBFileRepository;
 import com.familytree.genealogic.repository.PessoaRepository;
+
 
 @Controller
 public class GenealogicController {
-
-//	if (Pessoa.pessoaAtual == null)
+	
+	@Autowired
+    private DBFileRepository dbFileRepository;
 
 	@Autowired
 	private PessoaRepository pR;
@@ -68,8 +73,24 @@ public class GenealogicController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("index");
-		Pessoa.pessoaAtual = pR.findById(1);
+		Pessoa.pessoaAtual = pR.findById(2);
+		LoginController.verificaSession();
 		mv.addObject("pessoa", Pessoa.pessoaAtual);
+		mv.addObject("usuario", Usuario.user);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/galeria", method = RequestMethod.GET)
+	public ModelAndView galeria() {
+		ModelAndView mv = new ModelAndView("galeria");
+		Pessoa.pessoaAtual = pR.findById(2);
+		LoginController.verificaSession();
+		mv.addObject("pessoa", Pessoa.pessoaAtual);
+		mv.addObject("usuario", Usuario.user);
+		List<DBFile> file = dbFileRepository.findAll();
+		mv.addObject("numImagens", file.size());
+		mv.addObject("imagens", file);
+		
 		return mv;
 	}
 
@@ -78,6 +99,8 @@ public class GenealogicController {
 		List<Pessoa> pessoas = new ArrayList<Pessoa>();
 		pessoas = buscarPessoas();
 		Pessoa.pessoaAtual = pR.findById(idPessoa);
+		LoginController.verificaSession();
+		System.out.println(Usuario.user.getNome() + "acucar");
 
 		ModelAndView mv = new ModelAndView("familytree");
 		mv.addObject("pessoa", Pessoa.pessoaAtual);
@@ -101,6 +124,7 @@ public class GenealogicController {
 		mv.addObject("mae", "Mae");
 		mv.addObject("filhos", "Filhos");
 		mv.addObject("irmaos", "Irmaos");
+		mv.addObject("usuario", Usuario.user);
 
 		return mv;
 	}
@@ -108,16 +132,116 @@ public class GenealogicController {
 	@RequestMapping(value = "formCadastroPessoa-{tipo}", method = RequestMethod.GET)
 	public ModelAndView formCadPessoa(@PathVariable("tipo") String tipo) {
 		ModelAndView mv = new ModelAndView("cadastroPessoa");
+		if(Pessoa.pessoaAtual == null) {
+			Pessoa.pessoaAtual = pR.findById(1);
+			LoginController.verificaSession();
+			ModelAndView mv2 = new ModelAndView("index");
+			mv2.addObject("pessoa", Pessoa.pessoaAtual);
+			mv2.addObject("usuario", Usuario.user);
+			return mv2;
+		}
+		LoginController.verificaSession();
 		mv.addObject("pessoa", Pessoa.pessoaAtual);
-
 		mv.addObject("tipo", tipo);
+		mv.addObject("usuario", Usuario.user);
 
 		return mv;
 	}
 
+	@RequestMapping(value = "formEditCadastroPessoa-{tipo}-id{idPessoa}", method = RequestMethod.GET)
+	public ModelAndView formEditCadPessoa(@PathVariable("tipo") String tipo, @PathVariable("idPessoa") int idPessoa) {
+		ModelAndView mv = new ModelAndView("EditarPessoa");
+		if(Pessoa.pessoaAtual == null) {
+			Pessoa.pessoaAtual = pR.findById(1);
+			LoginController.verificaSession();
+			ModelAndView mv2 = new ModelAndView("index");
+			mv2.addObject("pessoa", Pessoa.pessoaAtual);
+			mv2.addObject("usuario", Usuario.user);
+			return mv2;
+		}
+		mv.addObject("pessoa", Pessoa.pessoaAtual);
+		mv.addObject("pessoaEdit", pR.findById(idPessoa));
+		mv.addObject("tipo", tipo);
+		mv.addObject("usuario", Usuario.user);
+
+		return mv;
+	}
+
+	@RequestMapping(value = "formEditCadastroPessoa-{tipo}-id{idPessoa}", method = RequestMethod.POST)
+	public String EditarPessoa(Pessoa pessoa, @PathVariable("tipo") String tipo,
+			@PathVariable("idPessoa") int idPessoa) {
+		pessoa.setId(idPessoa);
+		switch (tipo) {
+		case "Pai":
+			Pessoa.pessoaAtual.setPai(pessoa);
+			break;
+		case "Mae":
+			Pessoa.pessoaAtual.setMae(pessoa);
+			break;
+		case "Filhos":
+			if (Pessoa.pessoaAtual.getSexo().equalsIgnoreCase("MASCULINO")) {
+				pessoa.setPai(Pessoa.pessoaAtual);
+			} else {
+				pessoa.setMae(Pessoa.pessoaAtual);
+			}
+			break;
+		case "Irmaos":
+			pessoa.getIrmaos().add(Pessoa.pessoaAtual);
+			break;
+		default:
+			break;
+		}
+
+		if (pessoa.getCertidaoNascimento() == null) {
+			pessoa.setCertidaoNascimento(cR.findById(1));
+		} else {
+			cR.save(pessoa.getCertidaoNascimento());
+		}
+
+		if (pessoa.getCertidaoObito() == null) {
+			pessoa.setCertidaoObito(cR.findById(1));
+		} else {
+			cR.save(pessoa.getCertidaoObito());
+		}
+
+		if (pessoa.getPai() == null) {
+			pessoa.setPai(pR.findById(1));
+		}
+
+		if (pessoa.getMae() == null) {
+			pessoa.setMae(pR.findById(1));
+		}
+
+		pR.save(pessoa);
+
+		return "redirect:/familytree-" + Pessoa.pessoaAtual.getId();
+	}
+
+	@RequestMapping("/DeletarPessoa")
+	public String deletarPessoa(int id) {
+		Pessoa pessoa = pR.findById(id);
+		for (Pessoa p : buscarPessoas()) {
+			if (p.getPai().getId() == pessoa.getId()) {
+				p.setPai(pR.findById(1));
+				pR.save(p);
+			}
+			if (p.getMae().getId() == pessoa.getId()) {
+				p.setMae(pR.findById(1));
+				pR.save(p);
+			}
+		}
+		pR.delete(pessoa);
+		if (pessoa.getCertidaoNascimento() != cR.findById(1)) {
+			cR.delete(pessoa.getCertidaoNascimento());
+		}
+		if (pessoa.getCertidaoObito() != cR.findById(1)) {
+			cR.delete(pessoa.getCertidaoObito());
+		}
+		return "redirect:/familytree-" + Pessoa.pessoaAtual.getId();
+	}
+
 	@RequestMapping(value = "formCadastroPessoa-{tipo}", method = RequestMethod.POST)
 	public String CadastrarPessoa(Pessoa pessoa, @PathVariable("tipo") String tipo) {
-		System.out.println("xwxwwqwewecewcweoiii" + Pessoa.pessoaAtual.getSexo());
 		switch (tipo) {
 		case "Pai":
 			Pessoa.pessoaAtual.setPai(pessoa);
@@ -139,23 +263,23 @@ public class GenealogicController {
 			break;
 		}
 		if (pessoa.getCertidaoNascimento() == null) {
-			pessoa.setCertidaoNascimento(cR.findById(99));
+			pessoa.setCertidaoNascimento(cR.findById(1));
 		} else {
 			cR.save(pessoa.getCertidaoNascimento());
 		}
 
 		if (pessoa.getCertidaoObito() == null) {
-			pessoa.setCertidaoObito(cR.findById(99));
+			pessoa.setCertidaoObito(cR.findById(1));
 		} else {
 			cR.save(pessoa.getCertidaoObito());
 		}
 
 		if (pessoa.getPai() == null) {
-			pessoa.setPai(pR.findById(99));
-		} 
-		
+			pessoa.setPai(pR.findById(1));
+		}
+
 		if (pessoa.getMae() == null) {
-			pessoa.setMae(pR.findById(99));
+			pessoa.setMae(pR.findById(1));
 		}
 
 		pR.save(pessoa);
@@ -171,13 +295,6 @@ public class GenealogicController {
 		}
 		return pessoas;
 	}
-
-	@RequestMapping(value = "/cadastro-pessoa", method = RequestMethod.GET)
-	public ModelAndView cadastroPessoa() {
-		ModelAndView mv = new ModelAndView("cadastrar_pessoa");
-		mv.addObject("pessoa", Pessoa.pessoaAtual);
-
-		return mv;
-	}
+	
 
 }

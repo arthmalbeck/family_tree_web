@@ -2,48 +2,44 @@
 <html xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title>Genealogic</title>
-<!--Import Google Icon Font-->
+<title>FOURZETA - Gerenciador de Torneios de Padel</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
 <!--Import materialize.css-->
-
-
-<!--Let browser know website is optimized for mobile-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link type="text/css" rel="stylesheet"
 	href="materialize/css/materialize.min.css" media="screen,projection" />
 
+<!--Let browser know website is optimized for mobile-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="style/styleCss.css" />
-<link href="style/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
 
+<body>
 	<header>
-		<input type="hidden" id="confereUser_index" th:value="${usuario.nome}" />
+		<input type="hidden" id="confereUser_login" th:value="${usuario.nome}" />
 		<ul id="nav-mobile"
 			style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333; top: 0px; width: 100%; position: fixed; display: inline; z-index: 3;">
-			<li class="menu"><a id="login_index"
+			<li class="menu"><a id="login_login"
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				th:href="${(#mvc.url('LC#login')).build()}">Login</a></li>
 
-			<li class="menu"><a id="logout_index"
+			<li class="menu"><a id="logout_login"
 				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				th:href="${(#mvc.url('LC#logout')).build()}">Logout</a></li>
 
-			<li class="menu"><a id="solicitacoesCad_index"
+			<li class="menu"><a id="solicitacoesCad_login"
 				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				href="https://docs.google.com/spreadsheets/d/1uK2e5nXeCFlaVqQ7L0u-DZgWFamGdOPj-6OaWBRTVJs/edit#gid=1951242977">Ver
 					Solicitacoes Cadastro Pessoas</a></li>
 
-			<li class="menu"><a id="solicitarCad_index"
+			<li class="menu"><a id="solicitarCad_login"
 				style="display: Block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				href="https://docs.google.com/forms/d/1_8lcjmmcj0hpgDvwdhYRJGp7cTdL8hy6OkcKOMHlUdo/">Solicitar
 					Cadastro Pessoas</a></li>
 
 			<li class="menu"><a
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
-				th:href="${(#mvc.url('GC#galeria')).build()}">Galeria
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Galeria
 					de Fotos</a></li>
 
 			<li class="menu"><a
@@ -60,27 +56,35 @@
 				</h3></li>
 		</ul>
 	</header>
+	<div class="container formEvento" style="margin-top: 90px">
 
-	<div class="row" style="padding-left: 10%; padding-top: 90px">
-		<div style="padding-left: 30%;">
-			<h2>Arvore Genealogica Online</h2>
-		</div>
-		<div style="padding-left: 10%; max-width: 900px">
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-				do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-				enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-				ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-				culpa qui officia deserunt mollit anim id est laborum</p>
-		</div>
+		<form class="container" method="post">
+			<div class="row">
+				<div>
+					Usuario: <input type="text" value="" name="nickname" />
+				</div>
+				<div>
+					Senha: <input type="password" value="" name="senha" />
+				</div>
+			</div>
+			<div align="center" style="margin-top: 5px">
+				<button class="waves-effect waves-light btn" type="submit">Logar</button>
+			</div>
+		</form>
+
 	</div>
-
-	<script type="text/javascript"
-		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="materialize/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="materialize/js/controle_index.js"></script>
-	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
-
 </body>
+
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="materialize/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="materialize/js/controle_login.js"></script>
+<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+
+
+<footer>
+	<hr align="center" width="1200" style="max-higth:20px;margin-top:180px"  color=black>
+	<h6 align="center">Genealogic - Login</h6>
+</footer>
+
 </html>

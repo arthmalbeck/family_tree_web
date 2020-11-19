@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,10 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
-
-import com.familytree.genealogic.controller.GenealogicController;
 
 
 @Entity
@@ -65,10 +60,10 @@ public class Pessoa implements Serializable{
 	
 	private String nome;
 	
-	@OneToOne
+	@ManyToOne
 	private Certidao certidaoNascimento;
 	
-	@OneToOne
+	@ManyToOne
 	private Certidao certidaoObito;
 	
 	private String profissao;

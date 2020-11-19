@@ -16,6 +16,70 @@
 
 <link rel="stylesheet" href="style/styleCss.css" />
 <link href="style/bootstrap.min.css" rel="stylesheet">
+<style type="text/css">
+input[type="file"] {
+    border: 1px solid #128ff2;
+    padding: 6px;
+    max-width: 100%;
+}
+
+.file-input {
+    width: 100%;
+}
+
+.submit-btn {
+    display: block;
+    margin-top: 15px;
+    min-width: 100px;
+}
+
+@media screen and (min-width: 500px) {
+    .file-input {
+        width: calc(100% - 115px);
+    }
+
+    .submit-btn {
+        display: inline-block;
+        margin-top: 0;
+        margin-left: 10px;
+    }
+}
+
+
+.upload-container {
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #fff;
+      box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+      margin-top: 60px;
+      min-height: 400px;
+      position: relative;
+      padding: 20px;
+}
+
+.upload-header {
+    border-bottom: 1px solid #ececec;
+}
+
+.upload-header h2 {
+    font-weight: 500;
+}
+
+.single-upload {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.upload-response {
+    overflow-x: hidden;
+    word-break: break-all;
+}
+       
+ 
+
+</style>
 </head>
 <body>
 
@@ -43,7 +107,7 @@
 
 			<li class="menu"><a
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
-				th:href="${(#mvc.url('GC#galeria')).build()}">Galeria
+				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Galeria
 					de Fotos</a></li>
 
 			<li class="menu"><a
@@ -61,26 +125,54 @@
 		</ul>
 	</header>
 
-	<div class="row" style="padding-left: 10%; padding-top: 90px">
-		<div style="padding-left: 30%;">
-			<h2>Arvore Genealogica Online</h2>
-		</div>
-		<div style="padding-left: 10%; max-width: 900px">
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-				do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-				enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-				ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-				reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-				pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-				culpa qui officia deserunt mollit anim id est laborum</p>
-		</div>
-	</div>
+	 <div class="upload-content">
+	 <input type="hidden" id="num" th:value="${numImagens}" />
+                <div class="single-upload">
+                    <h3>Upload Single File</h3>
+                    <form id="singleUploadForm" name="singleUploadForm">
+                        <input id="singleFileUploadInput" type="file" name="file" class="file-input" required />
+                        <button type="submit" class="primary submit-btn">Submit</button>
+                    </form>
+                    <div class="upload-response">
+                        <div id="singleFileUploadError"></div>
+                        <div id="singleFileUploadSuccess"></div>
+                    </div>
+                </div>
+                <div class="multiple-upload">
+                    <h3>Upload Multiple Files</h3>
+                    <form id="multipleUploadForm" name="multipleUploadForm">
+                        <input id="multipleFileUploadInput" type="file" name="files" class="file-input" multiple required />
+                        <button type="submit" class="primary submit-btn">Submit</button>
+                    </form>
+                    <div class="upload-response">
+                        <div id="multipleFileUploadError"></div>
+                        <div id="multipleFileUploadSuccess"></div>
+                    </div>
+                    
+                </div>
+            </div>
+	<table class="container tabelaConvidado">
+		<thead>
+			<tr>
+				<th>Imagem</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="image: ${images}">
+			
+				<td><img style="max-width: 100px;max-height: 100px" th:src="${image.path}"/></td>
+			
+			</tr>
+		</tbody>
+	</table>
 
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="materialize/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="materialize/js/controle_index.js"></script>
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="materialize/js/image.js"></script>
 
 </body>
 </html>

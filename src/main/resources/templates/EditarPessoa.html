@@ -23,23 +23,23 @@
 <body>
 
 	<header>
-		<input type="hidden" id="confereUser_cad" th:value="${usuario.nome}" />
+		<input type="hidden" id="confereUser_edit" th:value="${usuario.nome}" />
 		<ul id="nav-mobile"
 			style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333; top: 0px; width: 100%; position: fixed; display: inline; z-index: 3;">
-			<li class="menu"><a id="login_cad"
+			<li class="menu"><a id="login_edit"
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				th:href="${(#mvc.url('LC#login')).build()}">Login</a></li>
 
-			<li class="menu"><a id="logout_cad"
+			<li class="menu"><a id="logout_edit"
 				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				th:href="${(#mvc.url('LC#logout')).build()}">Logout</a></li>
 
-			<li class="menu"><a id="solicitacoesCad_cad"
+			<li class="menu"><a id="solicitacoesCad_edit"
 				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				href="https://docs.google.com/spreadsheets/d/1uK2e5nXeCFlaVqQ7L0u-DZgWFamGdOPj-6OaWBRTVJs/edit#gid=1951242977">Ver
 					Solicitacoes Cadastro Pessoas</a></li>
 
-			<li class="menu"><a id="solicitarCad_cad"
+			<li class="menu"><a id="solicitarCad_edit"
 				style="display: Block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				href="https://docs.google.com/forms/d/1_8lcjmmcj0hpgDvwdhYRJGp7cTdL8hy6OkcKOMHlUdo/">Solicitar
 					Cadastro Pessoas</a></li>
@@ -68,7 +68,7 @@
 		<h5><strong>- Cadastro do Parentesco:<span th:text="${tipo}"></span></strong></h5>
 	</div>
 
-	<div style="min-width: 1100px;" class="container formEvento">
+	<div style="min-width: 1100px;" class="container formEvento" th:each="pessoa : ${pessoaEdit}">
 
 		<form style="min-width: 1100px;" class="container" method="post">
 			<div class="row">
@@ -76,60 +76,60 @@
 					<h5><Strong>Formulario de Cadastro de Pessoas</Strong></h5>
 				</div>
 				<div class="input-field col s6">
-					Nome: <input type="text" value="" name="nome">
+					Nome: <input type="text" th:value="${pessoa.nome}" name="nome">
 				</div>
 				<div class="col s6" style="padding-top:15px">
 				Sexo:
-					<select style="width: 50%;" class="browser-default" required name="sexo">
-						<option value="" disabled selected>Selecione um SEXO</option>
+					<select style="width: 50%;" class="browser-default" name="sexo">
+						<option th:text="${pessoa.sexo}" th:value="${pessoa.sexo}" selected></option>
 						<option value="MASCULINO">MASCULINO</option>
 						<option value="FEMININO">FEMININO</option>
 					</select>
 				</div>
 				<div class="input-field col s12">
-					Historia Familia: <input type="text" value=""
+					Historia Familia: <input type="text" th:value="${pessoa.historiaFamilia}"
 						name="historiaFamilia" />
 				</div>
 				<div class="input-field col s6">
-					Profissao: <input type="text" value="" name="profissao" />
+					Profissao: <input type="text" th:value="${pessoa.profissao}" name="profissao" />
 				</div>
 				<div class="input-field col s6">
-					Escolaridade: <input type="text" value=""
+					Escolaridade: <input type="text" th:value="${pessoa.escolaridade}"
 						name="escolaridade" />
 				</div>
 				<div class="input-field col s6">
-					Titulos Especiais: <input type="text" value=""
+					Titulos Especiais: <input type="text" th:value="${pessoa.titulosEspeciais}"
 						name="titulosEspeciais" />
 				</div>
 				
 				<div class="input-field col s6">
-					Origem Nome: <input type="text" value="" name="origemNome" />
+					Origem Nome: <input type="text" th:value="${pessoa.origemNome}"name="origemNome" />
 				</div>
 				<div class="input-field col s6">
-					Origem Sobrenome: <input type="text" value=""
+					Origem Sobrenome: <input type="text" th:value="${pessoa.origemSobrenome}"
 						name="profissao" />
 				</div>
 				<div class="input-field col s6">
-					Outras Informacoes: <input type="text" value=""
+					Outras Informacoes: <input type="text" th:value="${pessoa.outrasInformacoes}"
 						name="outrasInformacoes" />
 				</div>
 				<div class="input-field col s12">
 					<h5><Strong>Certidao Nascimento:</Strong></h5>
 				</div>
 				<div class="input-field col s6">
-					Data Nascimento: <input type="date" value=""
+					Data Nascimento: <input type="date" th:value="${pessoa.certidaoNascimento.data}"
 						name="certidaoNascimento.data" />
 				</div>
 				<div class="input-field col s6">
-					Pais: <input type="text" value=""
+					Pais: <input type="text" th:value="${pessoa.certidaoNascimento.pais}"
 						name="certidaoNascimento.pais">
 				</div>
 				<div class="input-field col s6">
-					Estado: <input type="text" value=""
+					Estado: <input type="text" th:value="${pessoa.certidaoNascimento.estado}"
 						name="certidaoNascimento.estado">
 				</div>
 				<div class="input-field col s6">
-					Cidade: <input type="text" value=""
+					Cidade: <input type="text" th:value="${pessoa.certidaoNascimento.cidade}"
 						name="certidaoNascimento.cidade">
 				</div>
 
@@ -137,18 +137,18 @@
 					<h5><Strong>Certidao Obito:</Strong></h5>
 				</div>
 				<div class="input-field col s6">
-					Data Obito: <input type="date" value=""
+					Data Obito: <input type="date" th:value="${pessoa.certidaoObito.data}"
 						name="certidaoObito.data" />
 				</div>
 				<div class="input-field col s6">
-					Pais: <input type="text" value="" name="certidaoObito.pais">
+					Pais: <input type="text" th:value="${pessoa.certidaoObito.pais}" name="certidaoObito.pais">
 				</div>
 				<div class="input-field col s6">
-					Estado: <input type="text" value=""
+					Estado: <input type="text" th:value="${pessoa.certidaoObito.estado}"
 						name="certidaoObito.estado">
 				</div>
 				<div class="input-field col s6">
-					Cidade: <input type="text" value=""
+					Cidade: <input type="text" th:value="${pessoa.certidaoObito.cidade}"
 						name="certidaoObito.cidade">
 				</div>
 			</div>
@@ -159,7 +159,7 @@
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="materialize/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="materialize/js/controle_cadastro.js"></script>
+	<script type="text/javascript" src="materialize/js/controle_edit.js"></script>
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 </body>
 </html>

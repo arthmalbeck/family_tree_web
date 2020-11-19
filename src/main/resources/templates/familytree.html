@@ -2,54 +2,45 @@
 <html xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+
 <title>Genealogic</title>
-<!--Import Google Icon Font-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
-<!--Import materialize.css-->
-
-<!--Let browser know website is optimized for mobile-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link type="text/css" rel="stylesheet"
 	href="materialize/css/materialize.min.css" media="screen,projection" />
-
-<style>
-.btn, .btn-large {
-	background-color: #3c763d;
-}
-</style>
-
 <link rel="stylesheet" href="style/styleCss.css" />
 <link href="style/bootstrap.min.css" rel="stylesheet">
-
 
 </head>
 <body>
 
 	<header>
+		<input type="hidden" id="confereUser" th:value="${usuario.nome}" />
 		<ul id="nav-mobile"
-			style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333;">
-			<li class="menu"><a
+			style="list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #333; top: 0px; width: 100%; position: fixed; display: inline; z-index: 3;">
+			<li class="menu"><a id="login"
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
-				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Login</a></li>
+				th:href="${(#mvc.url('LC#login')).build()}">Login</a></li>
 
-
-			<li class="menu"><a
+			<li class="menu"><a id="logout"
 				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
-				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Ver
+				th:href="${(#mvc.url('LC#logout')).build()}">Logout</a></li>
+
+			<li class="menu"><a id="solicitacoesCad"
+				style="display: none; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
+				href="https://docs.google.com/spreadsheets/d/1uK2e5nXeCFlaVqQ7L0u-DZgWFamGdOPj-6OaWBRTVJs/edit#gid=1951242977">Ver
 					Solicitacoes Cadastro Pessoas</a></li>
 
-			<li class="menu"><a
+			<li class="menu"><a id="solicitarCad"
 				style="display: Block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
-				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Solicitar
+				href="https://docs.google.com/forms/d/1_8lcjmmcj0hpgDvwdhYRJGp7cTdL8hy6OkcKOMHlUdo/">Solicitar
 					Cadastro Pessoas</a></li>
-
 
 			<li class="menu"><a
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
 				th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoa.id)).build()}">Galeria
 					de Fotos</a></li>
-
 
 			<li class="menu"><a
 				style="display: block; color: white; text-align: center; padding: 19px 16px; text-decoration: none;"
@@ -60,34 +51,26 @@
 				th:href="${(#mvc.url('GC#index')).build()}">Home</a></li>
 
 			<li style="float: left" class="menu"><h3
-					style="font-size: 19px; display: block; color: white; text-align: center; padding: 2px 20px 2px; text-decoration: none;">Genealogic</h3></li>
-
+					style="font-size: 19px; display: block; color: white; text-align: center; padding: 2px 20px 2px; text-decoration: none;">
+					Genealogic - <span th:text="${usuario.nome}"></span>
+				</h3></li>
 		</ul>
-
-
-
 	</header>
-	<!-- <input type="hidden" id="confereLogin" th:value ="${logado}" /> -->
 	<div class="row" th:each="pessoa : ${pessoa}"
-		style="padding: 5px 0px 0px 20px; max-width: 1200px">
-
-		<input type="hidden" id="cadPaiHidden" th:value="${pessoa.pai.nome}" />
-		<a id="cadPai"
+		style="padding: 60px 0px 0px 20px; max-width: 1200px">
+		<a id="cadPai1"
 			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, pai)).build()}"
 			class="waves-effect waves-light btn"><i
-			class="material-icons left">person_add </i>Cadastrar Pai</a> <input
-			type="hidden" id="cadMaeHidden" th:value="${pessoa.mae.nome}" /> <a
-			id="cadMae"
+			class="material-icons left">person_add </i>Cadastrar Pai</a> <a
+			id="cadMae1"
 			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, mae)).build()}"
 			class="waves-effect waves-light btn"><i
-			class="material-icons left">person_add </i>Cadastrar Mae</a> <input
-			type="hidden" id="cadFilhosHidden" th:value="${pessoa.sexo}" /> <a
-			id="cadFilhos"
+			class="material-icons left">person_add </i>Cadastrar Mae</a> <a
+			id="cadFilhos1"
 			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, filhos)).build()}"
 			class="waves-effect waves-light btn"><i
-			class="material-icons left">person_add </i>Cadastrar Filhos</a> <input
-			type="hidden" id="cadIrmaosHidden" th:value="${pessoa.sexo}" /> <a
-			id="cadIrmaos"
+			class="material-icons left">person_add </i>Cadastrar Filhos</a> <a
+			id="cadIrmaos1"
 			th:href="${(#mvc.url('GC#formCadPessoa').arg(0, irmaos)).build()}"
 			class="waves-effect waves-light btn"><i
 			class="material-icons left">person_add </i>Cadastrar Irmaos</a>
@@ -99,6 +82,9 @@
 
 			<div style="margin-top: 10px;" th:each="pessoa : ${pessoa}"
 				class="container detalhesEvento">
+				<input type="hidden" id="conferePai" th:value="${pessoa.pai.id}" />
+				<input type="hidden" id="confereMae" th:value="${pessoa.mae.id}" />
+
 				<h5 style="padding-left: 45%">
 					<Strong>Perfil</Strong>
 				</h5>
@@ -209,12 +195,19 @@
 								</thead>
 								<tbody>
 									<tr th:each="filho: ${listaFilhos}">
-										<td><span th:text="${filho.nome}"></span></td>
+										<td><a
+											th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, filho.id)).build()}">
+												<span style="color: blue; text-decoration: underline"
+												th:text="${filho.nome}"></span>
+										</a></td>
 										<td><span th:text="${filho.sexo}"></span></td>
 										<td><span th:text="${filho.pai.nome}"></span></td>
 										<td><span th:text="${filho.mae.nome}"></span></td>
-										<td><a class="waves-effect waves-light btn-small"><i
-												class="material-icons left">edit</i></a>|<a
+										<td><a id="editFilhos1"
+											th:href="${(#mvc.url('GC#formEditCadPessoa').arg(0, filhos).arg(1, filho.id)).build()}"
+											class="waves-effect waves-light btn-small"><i
+												class="material-icons left">edit</i></a>|<a id="deleteFilhos1"
+											th:href="${(#mvc.url('GC#deletarPessoa').arg(0, filho.id)).build()}"
 											class="waves-effect waves-light btn-small"><i
 												class="material-icons right">delete</i></a></td>
 									</tr>
@@ -241,12 +234,19 @@
 								</thead>
 								<tbody>
 									<tr th:each="irmao : ${listaIrmaos}">
-										<td><span th:text="${irmao.nome}"></span></td>
+										<td><a
+											th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, irmao.id)).build()}">
+												<span style="color: blue; text-decoration: underline"
+												th:text="${irmao.nome}"></span>
+										</a></td>
 										<td><span th:text="${irmao.sexo}"></span></td>
 										<td><span th:text="${irmao.pai.nome}"></span></td>
 										<td><span th:text="${irmao.mae.nome}"></span></td>
-										<td><a class="waves-effect waves-light btn-small"><i
-												class="material-icons left">edit</i></a>|<a
+										<td><a id="editIrmaos1"
+											th:href="${(#mvc.url('GC#formEditCadPessoa').arg(0, irmaos).arg(1, irmao.id)).build()}"
+											class="waves-effect waves-light btn-small"><i
+												class="material-icons left">edit</i></a>|<a id="deleteIrmaos1"
+											th:href="${(#mvc.url('GC#deletarPessoa').arg(0, irmao.id)).build()}"
 											class="waves-effect waves-light btn-small"><i
 												class="material-icons right">delete</i></a></td>
 									</tr>
@@ -274,25 +274,41 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="pai: ${pessoa.pai}">
-										<td><span th:text="${pai.nome}"></span></td>
-										<td><span th:text="${pai.sexo}"></span></td>
-										<td><span th:text="${pai.pai.nome}"></span></td>
-										<td><span th:text="${pai.mae.nome}"></span></td>
-										<td><a id="editPai"
+									<tr th:each="pessoaPai: ${pessoa.pai}">
+										<td><a id="linkComPai1"
+											th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoaPai.id)).build()}">
+												<span style="color: blue; text-decoration: underline"
+												th:text="${pessoaPai.nome}"></span>
+										</a><a id="linkSemPai1" style="display: none"> <span
+												th:text="${pessoaPai.nome}"></span>
+										</a></td>
+										<td><span th:text="${pessoaPai.sexo}"></span></td>
+										<td><span th:text="${pessoaPai.pai.nome}"></span></td>
+										<td><span th:text="${pessoaPai.mae.nome}"></span></td>
+										<td><a id="editPai1"
+											th:href="${(#mvc.url('GC#formEditCadPessoa').arg(0, pai).arg(1, pessoaPai.id)).build()}"
 											class="waves-effect waves-light btn-small"><i
-												class="material-icons left">edit</i></a>|<a id="deletePai"
+												class="material-icons left">edit</i></a>|<a id="deletePai1"
+											th:href="${(#mvc.url('GC#deletarPessoa').arg(0, pessoaPai.id)).build()}"
 											class="waves-effect waves-light btn-small"><i
 												class="material-icons right">delete</i></a></td>
 									</tr>
-									<tr th:each="mae: ${pessoa.mae}">
-										<td><span th:text="${mae.nome}"></span></td>
-										<td><span th:text="${mae.sexo}"></span></td>
-										<td><span th:text="${mae.pai.nome}"></span></td>
-										<td><span th:text="${mae.mae.nome}"></span></td>
-										<td><a id="editMae"
+									<tr th:each="pessoaMae: ${pessoa.mae}">
+										<td><a id="linkComMae1"
+											th:href="${(#mvc.url('GC#arvoreGenealogica').arg(0, pessoaMae.id)).build()}">
+												<span style="color: blue; text-decoration: underline"
+												th:text="${pessoaMae.nome}"></span>
+										</a><a id="linkSemMae1" style="display: none"> <span
+												th:text="${pessoaMae.nome}"></span>
+										</a></td>
+										<td><span th:text="${pessoaMae.sexo}"></span></td>
+										<td><span th:text="${pessoaMae.pai.nome}"></span></td>
+										<td><span th:text="${pessoaMae.mae.nome}"></span></td>
+										<td><a id="editMae1"
+											th:href="${(#mvc.url('GC#formEditCadPessoa').arg(0, mae).arg(1, pessoaMae.id)).build()}"
 											class="waves-effect waves-light btn-small"><i
-												class="material-icons left">edit</i></a>|<a id="deleteMae"
+												class="material-icons left">edit</i></a>|<a id="deleteMae1"
+											th:href="${(#mvc.url('GC#deletarPessoa').arg(0, pessoaMae.id)).build()}"
 											class="waves-effect waves-light btn-small"><i
 												class="material-icons right">delete</i></a></td>
 									</tr>
@@ -310,6 +326,7 @@
 	<script type="text/javascript"
 		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="materialize/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="materialize/js/controle.js"></script>
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	<script type="text/javascript">
 		$(function() {

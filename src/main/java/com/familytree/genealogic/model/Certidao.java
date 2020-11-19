@@ -17,8 +17,6 @@ public class Certidao {
 	private String estado;
 	private String data;
 	
-	@OneToOne
-	private Pessoa pessoa;
 	
 	public int getId() {
 		return id;
